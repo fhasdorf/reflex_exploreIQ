@@ -1,0 +1,29 @@
+# --- Python & Environments ---
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# --- Reflex Framework ---
+.web/
+.states/
+# Die rxconfig.py NICHT ignorieren, die muss ins Repo!
+
+# --- Lokale Konfiguration & Secrets ---
+.env
+.vscode/
+.idea/
+
+# --- Daten & Backups ---
+*.rar
+*.zip
+*.7z
+# Geodaten werden NICHT ignoriert, da < 50MB (wie besprochen)
+# Falls du sie doch ausschließen willst, füge 'geodaten/' hier ein.
+
+# --- OS Spezifisches ---
+.DS_Store
+Thumbs.db
