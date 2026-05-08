@@ -18,9 +18,8 @@ python -m venv .venv
 # Aktivieren (Windows)
 .venv\Scripts\activate
 
-# requirements.txt erstellen mit pip-chill
-Installieren: pip install pip-chill
-Ausführen: pip-chill > requirements.txt
+# requirements.txt erstellen pipregs
+pipreqs . --force
 
 # Pakete mit pip installieren
 pip install -r requirements.txt
