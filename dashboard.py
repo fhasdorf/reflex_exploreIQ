@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Frank Hasdorf
 # @Date:   05-05-2026 20:01:29
-# @Last Modified by:   Frank Hasdorf
-# @Last Modified time: 06-05-2026 18:48:02
+# @Last Modified by:   Frank Hasdorf / Claude
+# @Last Modified time: 09-05-2026
 """
 dashboard.py — Startseite / Übersicht
 """
@@ -136,7 +136,7 @@ def dashboard_page() -> rx.Component:
                 margin_bottom="12px",
             ),
 
-            # App-Kacheln 2x3
+            # App-Kacheln 2x4
             rx.grid(
                 app_card(
                     "◈",
@@ -154,6 +154,16 @@ def dashboard_page() -> rx.Component:
                     "AKTIV",
                     "#5D8A6B",
                 ),
+                # ── NEU ──────────────────────────────────────────────────────
+                app_card(
+                    "⊛",
+                    "Geochemische Anomalien",
+                    "NGU MINS · Till · Humus · EM · Mag · Rad · Kongsberg",
+                    "/geochem",
+                    "NEU",
+                    "#C8A850",
+                ),
+                # ─────────────────────────────────────────────────────────────
                 app_card(
                     "☰",
                     "Bergrettigheter-Tabelle",

@@ -328,44 +328,145 @@ def _fill_utm(df: pd.DataFrame, mask: pd.Series, default_zone: int) -> pd.DataFr
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _detect_xyz_type(filepath: Path) -> str:
+    """Erkennt EM/Mag/Rad aus Dateiname – unterstützt alle NGU Namenskonventionen."""
     name = filepath.stem.lower()
-    if "_em_" in name:  return "em"
-    if "_mag_" in name: return "mag"
-    if "_rad_" in name: return "rad"
+    # Magnetik-Schlüsselwörter
+    if any(k in name for k in ("_mag", "mag_", "magnetics", "magnetic", "magnet")):
+        return "mag"
+    # Radiometrie-Schlüsselwörter
+    if any(k in name for k in ("_rad", "rad_", "radiometric", "radiometrics", "radiometry")):
+        return "rad"
+    # EM explizit
+    if any(k in name for k in ("_em_", "_em", "em_", "electromagnetic")):
+        return "em"
+    # Fallback: EM (häufigster Typ)
     return "em"
 
 
-def load_geophys_xyz(filepath: Path) -> pd.DataFrame:
+def load_geophys_xyz(filepath: Path) -> tuple:
+    """
+    Lädt NGU XYZ-Geophysikdateien.
+
+    NGU-Format (Kongsberg EM/Mag/Rad):
+      - Kommentarzeilen beginnen mit '/' – Header steht in letzter Kommentarzeile
+      - 'Line N' Zeilen markieren Fluglinien → überspringen
+      - '*' = Nullwert
+      - Koordinaten heißen X_EM/Y_EM, X_Mag/Y_Mag etc.
+    """
     log.info(f"  XYZ: {filepath.name}")
     dtype = _detect_xyz_type(filepath)
-    comments, header_line, data_start = [], None, 0
+
     with open(filepath, "r", encoding="utf-8", errors="replace") as f:
         lines = f.readlines()
+
+    # Schritt 1: Header aus Kommentarzeilen extrahieren
+    # NGU schreibt Spaltennamen in letzte '/' Zeile vor den Daten
+    col_names = None
+    data_start = 0
+
     for i, line in enumerate(lines):
         s = line.strip()
-        if not s: continue
-        if s[0] in ("/", "#", "!"):
-            comments.append(s); data_start = i + 1
-        elif header_line is None:
-            try:    float(s.split()[0]); data_start = i
-            except: header_line = s; data_start = i + 1
+        if not s:
+            continue
+        if s.startswith("/"):
+            # Letzte Kommentarzeile mit Spaltennamen erkennen
+            # Sie enthält typisch X_, Y_, UTC, Alt, E_, RES_ etc.
+            tokens = s.lstrip("/").split()
+            if len(tokens) >= 4 and any(
+                t.startswith(("X_", "Y_", "Easting", "Northing", "E_", "UTC", "Alt", "TMI", "K_", "TC_"))
+                for t in tokens
+            ):
+                col_names = tokens
+                log.debug(f"  Header gefunden Zeile {i}: {col_names[:6]}...")
+            data_start = i + 1
+        elif s.lower().startswith("line"):
+            # Fluglinien-Marker überspringen (z.B. "Line 10")
+            data_start = i + 1
+            continue
+        else:
+            # Erste echte Datenzeile
             break
-    col_names = header_line.replace(",", " ").split() if header_line else None
-    df = pd.read_csv(filepath, skiprows=data_start, sep=r"\s+", header=None,
-                     names=col_names, na_values=[-9999, -9999.0, 99999, 999999],
-                     engine="python", on_bad_lines="skip")
+
+    # Schritt 2: Daten einlesen – Fluglinien-Marker beim Einlesen überspringen
+    # Sammle skip-Zeilen (alle "Line N" Zeilen nach data_start)
+    skip_rows = []
+    for i, line in enumerate(lines):
+        if i < data_start:
+            skip_rows.append(i)
+            continue
+        s = line.strip()
+        if s.lower().startswith("line") or s.startswith("/") or s.startswith("//"):
+            skip_rows.append(i)
+
+    df = pd.read_csv(
+        filepath,
+        skiprows=skip_rows,
+        sep=r"\s+",
+        header=None,
+        names=col_names,
+        na_values=[-9999, -9999.0, 99999, 999999, "*", "****", "*****"],
+        engine="python",
+        on_bad_lines="skip",
+    )
+
+    # Schritt 3: Koordinatenspalten normalisieren
+    # NGU-Varianten: X_EM, Y_EM, X_Mag, Y_Mag, Easting, Northing, X, Y
     rename = {}
     for col in df.columns:
         cl = str(col).lower()
-        if cl in ("x","east","easting","utme","e32wgs"): rename[col] = "Easting"
-        elif cl in ("y","north","northing","utmn","n32wgs"): rename[col] = "Northing"
-        elif cl in ("z","elev","elevation","alt"): rename[col] = "Elevation"
+        if cl in ("x_em", "x_mag", "x_rad", "x", "easting", "east", "utme"):
+            rename[col] = "Easting"
+        elif cl in ("y_em", "y_mag", "y_rad", "y", "northing", "north", "utmn"):
+            rename[col] = "Northing"
+        elif cl in ("alt_r_em", "alt_r", "alt", "elevation", "elev", "z"):
+            rename[col] = "Elevation"
+        elif cl == "utc_time":
+            rename[col] = "UTC"
     df = df.rename(columns=rename)
+
+    # Schritt 4: Koordinaten zu float konvertieren
+    for coord in ("Easting", "Northing"):
+        if coord in df.columns:
+            df[coord] = pd.to_numeric(df[coord], errors="coerce")
+
+    # Schritt 5: Koordinaten → WGS84 direkt (UTM32N für Kongsberg)
+    if "Easting" in df.columns and "Northing" in df.columns:
+        valid = df["Easting"].notna() & df["Northing"].notna()
+        n_valid = valid.sum()
+        if n_valid > 0:
+            try:
+                from pyproj import Transformer
+                t = Transformer.from_crs("EPSG:32632", "EPSG:4326", always_xy=True)
+                lons, lats = t.transform(
+                    df.loc[valid, "Easting"].values,
+                    df.loc[valid, "Northing"].values
+                )
+                df["lon"] = np.nan
+                df["lat"] = np.nan
+                df.loc[valid, "lon"] = np.round(lons, 6)
+                df.loc[valid, "lat"] = np.round(lats, 6)
+            except ImportError:
+                # pyproj nicht installiert – UTM direkt speichern
+                df["lon"] = df["Easting"]
+                df["lat"] = df["Northing"]
+        else:
+            df["lon"] = np.nan
+            df["lat"] = np.nan
+    else:
+        df["lon"] = np.nan
+        df["lat"] = np.nan
+        log.warning(f"  Keine Koordinatenspalten in {filepath.name}")
+        log.warning(f"  Verfügbare Spalten: {list(df.columns[:10])}")
+
     df["_typ"] = dtype
     df["_quelle"] = filepath.stem
-    df["_area"] = next((a for a in ("Area1","Area2","Area3")
-                        if a.lower() in filepath.stem.lower()), "Unknown")
-    log.info(f"    → {len(df):,} Punkte | {dtype.upper()}")
+    df["_area"] = next(
+        (a for a in ("Area1", "Area2", "Area3") if a.lower() in filepath.stem.lower()),
+        "Unknown"
+    )
+
+    n_coords = df["lon"].notna().sum()
+    log.info(f"    → {len(df):,} Punkte | {dtype.upper()} | Koordinaten: {n_coords:,}")
     return df, dtype
 
 
@@ -424,9 +525,19 @@ def run_pipeline(input_dir: Path, output_dir: Path, utm_zone: int = 32):
     log.info(f"Output: {output_dir}")
     log.info("=" * 60)
 
-    xlsx_files = sorted(input_dir.rglob("*.xlsx")) + sorted(input_dir.rglob("*.XLSX"))
-    ods_files  = sorted(input_dir.rglob("*.ods"))  + sorted(input_dir.rglob("*.ODS"))
-    xyz_files  = sorted(input_dir.rglob("*.XYZ"))  + sorted(input_dir.rglob("*.xyz"))
+    xlsx_files_raw = sorted(input_dir.glob("**/*.xlsx")) + sorted(input_dir.glob("**/*.XLSX"))
+    seen_x = set()
+    xlsx_files = [f for f in xlsx_files_raw if f.name not in seen_x and not seen_x.add(f.name)]
+    ods_files_raw = sorted(input_dir.glob("**/*.ods")) + sorted(input_dir.glob("**/*.ODS"))
+    seen_o = set()
+    ods_files = [f for f in ods_files_raw if f.name not in seen_o and not seen_o.add(f.name)]
+    xyz_files_raw = sorted(input_dir.glob("**/*.XYZ")) + sorted(input_dir.glob("**/*.xyz"))
+    seen_names = set()
+    xyz_files = []
+    for f in xyz_files_raw:
+        if f.name not in seen_names:
+            seen_names.add(f.name)
+            xyz_files.append(f)
     log.info(f"Gefunden: {len(xlsx_files)} XLSX | {len(ods_files)} ODS | {len(xyz_files)} XYZ")
 
     # ── Geochemie ────────────────────────────────────────────────────────────
@@ -468,30 +579,70 @@ def run_pipeline(input_dir: Path, output_dir: Path, utm_zone: int = 32):
     # ── Geophysik ────────────────────────────────────────────────────────────
     if xyz_files:
         log.info("\n── Geophysik XYZ ───────────────────────────────────")
-        em_dfs, mag_dfs, rad_dfs = [], [], []
+        em_pairs, mag_pairs, rad_pairs = [], [], []
         for f in xyz_files:
             try:
                 df, dtype = load_geophys_xyz(f)
-                if   dtype == "em":  em_dfs.append(df)
-                elif dtype == "mag": mag_dfs.append(df)
-                elif dtype == "rad": rad_dfs.append(df)
+                pair = (f.name, df)
+                if   dtype == "em":  em_pairs.append(pair)
+                elif dtype == "mag": mag_pairs.append(pair)
+                elif dtype == "rad": rad_pairs.append(pair)
             except Exception as e:
                 log.error(f"  Fehler {f.name}: {e}")
 
         log.info("\n── Export Geophysik ────────────────────────────────")
-        for label, dfs, fname in [
-            ("EM",  em_dfs,  "geophysik_em.parquet"),
-            ("Mag", mag_dfs, "geophysik_mag.parquet"),
-            ("Rad", rad_dfs, "geophysik_rad.parquet"),
+        META_SKIP = {"Easting","Northing","lon","lat","Line","Fiducial",
+                     "_typ","_quelle","_area","_utm_zone","Elevation"}
+        for label, file_df_pairs, fname in [
+            ("EM",  em_pairs,  "geophysik_em.parquet"),
+            ("Mag", mag_pairs, "geophysik_mag.parquet"),
+            ("Rad", rad_pairs, "geophysik_rad.parquet"),
         ]:
-            if not dfs: continue
-            merged = pd.concat(dfs, ignore_index=True, sort=False)
-            merged = utm_to_wgs84(merged, utm_zone)
-            save_parquet(merged, output_dir / fname)
-            meta = {"Easting","Northing","lon","lat","Line","Fiducial","_typ","_quelle","_area"}
-            val_cols = [c for c in merged.columns if c not in meta][:6]
-            save_geojson(merged, output_dir / f"anomalien_{label.lower()}.geojson",
-                         val_cols, max_points=30_000)
+            if not file_df_pairs:
+                continue
+            out_path = output_dir / fname
+            geojson_samples = []
+            val_cols = []
+            import pyarrow as pa
+            import pyarrow.parquet as pq
+
+            writer = None
+            total_pts = 0
+            for src_name, df_chunk in file_df_pairs:
+                try:
+                    df_chunk = utm_to_wgs84(df_chunk, utm_zone)
+                    if not val_cols:
+                        val_cols = [c for c in df_chunk.columns if c not in META_SKIP][:6]
+                    # String-Spalten bereinigen für Parquet
+                    for col in df_chunk.select_dtypes(include=["object","string"]).columns:
+                        df_chunk[col] = df_chunk[col].astype(str).replace("nan", pd.NA)
+                    table = pa.Table.from_pandas(df_chunk, preserve_index=False)
+                    if writer is None:
+                        writer = pq.ParquetWriter(out_path, table.schema, compression="snappy")
+                    writer.write_table(table)
+                    total_pts += len(df_chunk)
+                    log.info(f"  {label} ✓ {src_name}: {len(df_chunk):,} Punkte")
+                    # GeoJSON Sample (max 500 pro Datei)
+                    sample = df_chunk.dropna(subset=["lon","lat"])
+                    if len(sample) > 500:
+                        sample = sample.iloc[::max(1, len(sample)//500)]
+                    geojson_samples.append(sample)
+                    del df_chunk, table
+                except Exception as e:
+                    log.error(f"  {label} Fehler {src_name}: {e}")
+                    continue
+
+            if writer:
+                writer.close()
+                size_mb = out_path.stat().st_size / 1e6
+                log.info(f"  ✓ {fname} ({size_mb:.1f} MB, {total_pts:,} Punkte gesamt)")
+
+            if geojson_samples:
+                sample_df = pd.concat(geojson_samples, ignore_index=True)
+                if len(sample_df) > 30_000:
+                    sample_df = sample_df.iloc[::max(1, len(sample_df)//30_000)]
+                save_geojson(sample_df, output_dir / f"anomalien_{label.lower()}.geojson",
+                             val_cols, max_points=30_000)
 
     # ── Zusammenfassung ──────────────────────────────────────────────────────
     log.info("\n" + "=" * 60)

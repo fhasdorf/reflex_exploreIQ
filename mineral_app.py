@@ -11,6 +11,7 @@ Ersetzt die Streamlit map3.py
 import reflex as rx
 import json
 import os
+from mineral_app.geochem_map import geochem_page, GeochemState
 
 # ---------------------------------------------------------------------------
 # WMS Layer Konfiguration
@@ -863,11 +864,13 @@ app = rx.App(
     head_components=[
         rx.el.script(src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"),
         rx.el.script(src="/map_init.js", defer=True),
+        rx.el.script(src="/geochem_map_init.js", defer=True),
     ],
 )
 app.add_page(index, route="/", title="EMI ExploreIQ · Dashboard")
 app.add_page(map_page, route="/map", title="EMI ExploreIQ · Claim-Karte")
 app.add_page(search_page, route="/search", title="EMI ExploreIQ · Prospektivität")
+app.add_page(geochem_page, route="/geochem", title="EMI ExploreIQ · Geochemie")
 
 
 def _placeholder(title: str, icon: str) -> rx.Component:
