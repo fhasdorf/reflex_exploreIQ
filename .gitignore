@@ -2,6 +2,7 @@
 .venv/
 venv/
 ENV/
+rohdaten/
 
 # Reflex Build-Ordner und Cache
 .web/
@@ -14,5 +15,4 @@ __pycache__/
 # Ordner ignorieren
 docs/
 
-__pycache__/
-*.py[cod]
+*.tmp.driveupload
