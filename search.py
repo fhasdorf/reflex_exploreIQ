@@ -12,17 +12,17 @@ from mineral_app.search_state import SearchState, MINERALS
 # Stil-Konstanten (konsistent mit dem Rest der App)
 # ---------------------------------------------------------------------------
 
-BG_DEEP   = "#12100E"
-BG_CARD   = "#1A1814"
-BG_HOVER  = "#221F1A"
-BORDER    = "#2A2520"
+BG_DEEP   = "#0B1222"
+BG_CARD   = "#0F1A30"
+BG_HOVER  = "#172A48"
+BORDER    = "#1E3254"
 GOLD      = "#C8A850"
 GOLD_DIM  = "#C8A85020"
 GOLD_BDR  = "#C8A85055"
-GREEN     = "#5D8A6B"
-MUTED     = "#6B6560"
-TEXT_MAIN = "#E8E0D0"
-TEXT_MID  = "#B8A898"
+GREEN     = "#4D9A7A"
+MUTED     = "#4A6888"
+TEXT_MAIN = "#E0E8F4"
+TEXT_MID  = "#8AAAC6"
 WARN      = "#D85A30"
 
 
@@ -174,7 +174,7 @@ def proxy_row(proxy: dict) -> rx.Component:
         border=f"1px solid {BORDER}",
         border_radius="8px",
         padding="10px 14px",
-        style={"transition": "border-color 0.2s", "_hover": {"border_color": "#3A3530"}},
+        style={"transition": "border-color 0.2s", "_hover": {"border_color": "#284468"}},
     )
 
 
@@ -319,7 +319,7 @@ def proxy_weight_panel() -> rx.Component:
             border_radius="8px",
         ),
 
-        background="#1E1C18",
+        background="#132238",
         border=f"1px solid {BORDER}",
         border_radius="10px",
         padding="18px 20px",
@@ -362,7 +362,7 @@ def search_controls() -> rx.Component:
             border_radius="20px",
             padding="6px 16px",
             cursor="pointer",
-            style={"transition": "all 0.2s", "_hover": {"border_color": "#3A3530", "color": TEXT_MID}},
+            style={"transition": "all 0.2s", "_hover": {"border_color": "#284468", "color": TEXT_MID}},
         ),
         rx.cond(
             SearchState.has_results,
@@ -379,7 +379,7 @@ def search_controls() -> rx.Component:
                     align="center",
                     padding="5px 14px",
                     border_radius="20px",
-                    background="#5D8A6B18",
+                    background="#4D9A7A18",
                     border=f"1px solid {GREEN}40",
                 ),
                 href="/map",
@@ -557,13 +557,13 @@ def search_page() -> rx.Component:
             # Footer
             rx.hstack(
                 rx.text("Score = Σ(Proxy-Treffer × Gewicht) + 100 bei Mineral-Direkttreffer",
-                        size="1", color="#3A3530"),
+                        size="1", color="#284468"),
                 rx.spacer(),
-                rx.text("© NGU · DMF · Element29 AS", size="1", color="#3A3530"),
+                rx.text("© NGU · DMF · Element29 AS", size="1", color="#284468"),
                 width="100%",
                 margin_top="40px",
                 padding_top="16px",
-                border_top=f"1px solid #1E1C18",
+                border_top=f"1px solid #132238",
             ),
 
             max_width="860px",

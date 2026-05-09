@@ -13,8 +13,8 @@ PAGES = [
 ]
 
 NAV_STYLE = {
-    "background": "#12100E",
-    "border_bottom": "1px solid #2A2520",
+    "background": "#0B1222",
+    "border_bottom": "1px solid #1E3254",
     "width": "100%",
     "padding": "0 24px",
     "height": "48px",
@@ -36,23 +36,23 @@ def pill_tab(label: str, icon: str, href: str, active: bool) -> rx.Component:
             background=rx.cond(
                 active,
                 "#C8A850",
-                "#1E1C18",
+                "#132238",
             ),
             color=rx.cond(
                 active,
-                "#12100E",
-                "#6B6560",
+                "#0B1222",
+                "#4A6888",
             ),
             border=rx.cond(
                 active,
                 "1px solid #C8A850",
-                "1px solid #2A2520",
+                "1px solid #1E3254",
             ),
             style={
                 "transition": "all 0.2s",
                 "_hover": {
-                    "background": rx.cond(active, "#C8A850", "#2A2520"),
-                    "color": rx.cond(active, "#12100E", "#B8A898"),
+                    "background": rx.cond(active, "#C8A850", "#1E3254"),
+                    "color": rx.cond(active, "#0B1222", "#8AAAC6"),
                 },
             },
         ),
@@ -65,16 +65,16 @@ def back_button() -> rx.Component:
     """Kleiner Back-Link zum Dashboard – für fullscreen Seiten."""
     return rx.link(
         rx.hstack(
-            rx.text("←", size="1", color="#6B6560"),
-            rx.text("Dashboard", size="1", color="#6B6560", letter_spacing="0.06em"),
+            rx.text("←", size="1", color="#4A6888"),
+            rx.text("Dashboard", size="1", color="#4A6888", letter_spacing="0.06em"),
             spacing="1",
             align="center",
             padding="4px 10px",
             border_radius="4px",
-            border="1px solid #2A2520",
-            background="#12100E",
+            border="1px solid #1E3254",
+            background="#0B1222",
             style={
-                "_hover": {"border_color": "#3A3530", "color": "#B8A898"},
+                "_hover": {"border_color": "#284468", "color": "#8AAAC6"},
                 "transition": "all 0.2s",
             },
         ),
@@ -103,13 +103,13 @@ def navbar(current_page: str) -> rx.Component:
                 rx.text(
                     "ExploreIQ",
                     size="1",
-                    color="#3A3530",
+                    color="#284468",
                     letter_spacing="0.2em",
                 ),
                 spacing="2",
                 align="center",
             ),
-            rx.divider(orientation="vertical", height="20px", color="#2A2520"),
+            rx.divider(orientation="vertical", height="20px", color="#1E3254"),
             # Pill Tabs
             rx.hstack(
                 *[
@@ -131,9 +131,9 @@ def navbar(current_page: str) -> rx.Component:
                     width="7px",
                     height="7px",
                     border_radius="50%",
-                    background="#5D8A6B",
+                    background="#4D9A7A",
                 ),
-                rx.text("NGU · DMF · Live", size="1", color="#3A3530"),
+                rx.text("NGU · DMF · Live", size="1", color="#284468"),
                 spacing="2",
                 align="center",
             ),

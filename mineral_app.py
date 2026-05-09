@@ -184,7 +184,7 @@ def _load_bergr_geojson() -> str:
                 return "#9E9E9E"
             try:
                 age = (datetime.now() - datetime.strptime(str(val)[:10], "%Y-%m-%d")).days
-                if age < 365:      return "#5D8A6B"
+                if age < 365:      return "#4D9A7A"
                 elif age < 1095:   return "#8A7D5D"
                 elif age < 3650:   return "#8A6040"
                 else:              return "#6B4226"
@@ -361,8 +361,8 @@ def layer_toggle(name: str, gruppe: str) -> rx.Component:
                 color_scheme="amber",
             ),
             rx.vstack(
-                rx.text(name.split("—")[-1].strip(), size="1", weight="medium", color="#E8E0D0"),
-                rx.text(cfg["desc"], size="1", color="#6B6560"),
+                rx.text(name.split("—")[-1].strip(), size="1", weight="medium", color="#E0E8F4"),
+                rx.text(cfg["desc"], size="1", color="#4A6888"),
                 spacing="0",
                 align="start",
             ),
@@ -386,7 +386,7 @@ def gruppe_section(gruppe: str) -> rx.Component:
             f"{gruppe_icons.get(gruppe, '•')} {gruppe}",
             size="1",
             weight="bold",
-            color="#B8A898",
+            color="#8AAAC6",
             letter_spacing="0.08em",
             text_transform="uppercase",
             padding_bottom="6px",
@@ -402,7 +402,7 @@ def overlay_section() -> rx.Component:
             "📁 Eigene Daten",
             size="1",
             weight="bold",
-            color="#B8A898",
+            color="#8AAAC6",
             letter_spacing="0.08em",
             text_transform="uppercase",
             padding_bottom="6px",
@@ -415,8 +415,8 @@ def overlay_section() -> rx.Component:
                 color_scheme="red",
             ),
             rx.vstack(
-                rx.text("Element29 Claims", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("234 Explorations-Polygone", size="1", color="#6B6560"),
+                rx.text("Element29 Claims", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("234 Explorations-Polygone", size="1", color="#4A6888"),
                 spacing="0",
                 align="start",
             ),
@@ -432,8 +432,8 @@ def overlay_section() -> rx.Component:
                 color_scheme="orange",
             ),
             rx.vstack(
-                rx.text("DMF Bergrettigheter CSV", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("Lokal · Alters-Färbung", size="1", color="#6B6560"),
+                rx.text("DMF Bergrettigheter CSV", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("Lokal · Alters-Färbung", size="1", color="#4A6888"),
                 spacing="0",
                 align="start",
             ),
@@ -449,8 +449,8 @@ def overlay_section() -> rx.Component:
                 color_scheme="yellow",
             ),
             rx.vstack(
-                rx.text("DMF Live WMS", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("Täglich aktuell · Klick-Info", size="1", color="#6B6560"),
+                rx.text("DMF Live WMS", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("Täglich aktuell · Klick-Info", size="1", color="#4A6888"),
                 spacing="0",
                 align="start",
             ),
@@ -468,8 +468,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         return rx.hstack(
             rx.switch(checked=checked, on_change=on_change, size="1", color_scheme=color),
             rx.vstack(
-                rx.text(label, size="1", weight="medium", color="#E8E0D0"),
-                rx.text(desc, size="1", color="#6B6560"),
+                rx.text(label, size="1", weight="medium", color="#E0E8F4"),
+                rx.text(desc, size="1", color="#4A6888"),
                 spacing="0",
                 align="start",
             ),
@@ -481,16 +481,16 @@ def ngu_lagerstaetten_section() -> rx.Component:
     return rx.box(
         rx.text(
             "⛏ NGU Lagerstätten",
-            size="1", weight="bold", color="#B8A898",
+            size="1", weight="bold", color="#8AAAC6",
             letter_spacing="0.08em", text_transform="uppercase",
             padding_bottom="6px",
         ),
-        rx.text("Malm", size="1", color="#6B6560", margin_bottom="4px"),
+        rx.text("Malm", size="1", color="#4A6888", margin_bottom="4px"),
         rx.hstack(
             rx.switch(checked=MapState.show_malm_forekomst_flate, on_change=lambda _: MapState.toggle_malm_forekomst_flate(), size="1", color_scheme="amber"),
             rx.vstack(
-                rx.text("Malm-Forekomst Fläche", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("105 Polygone · nach Erztyp", size="1", color="#6B6560"),
+                rx.text("Malm-Forekomst Fläche", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("105 Polygone · nach Erztyp", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -498,8 +498,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_malm_registrering_flate, on_change=lambda _: MapState.toggle_malm_registrering_flate(), size="1", color_scheme="amber"),
             rx.vstack(
-                rx.text("Malm-Registrierung Fläche", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("168 Polygone · nach Erztyp", size="1", color="#6B6560"),
+                rx.text("Malm-Registrierung Fläche", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("168 Polygone · nach Erztyp", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -507,8 +507,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_malm_forekomst_punkt, on_change=lambda _: MapState.toggle_malm_forekomst_punkt(), size="1", color_scheme="orange"),
             rx.vstack(
-                rx.text("Malm-Forekomst Punkt", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("108 Punkte", size="1", color="#6B6560"),
+                rx.text("Malm-Forekomst Punkt", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("108 Punkte", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -516,18 +516,18 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_malm_registrering_punkt, on_change=lambda _: MapState.toggle_malm_registrering_punkt(), size="1", color_scheme="orange"),
             rx.vstack(
-                rx.text("Malm-Registrierung Punkt", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("4.543 Punkte", size="1", color="#6B6560"),
+                rx.text("Malm-Registrierung Punkt", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("4.543 Punkte", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
         ),
-        rx.text("Industrimineral", size="1", color="#6B6560", margin_top="8px", margin_bottom="4px"),
+        rx.text("Industrimineral", size="1", color="#4A6888", margin_top="8px", margin_bottom="4px"),
         rx.hstack(
             rx.switch(checked=MapState.show_industri_forekomst_flate, on_change=lambda _: MapState.toggle_industri_forekomst_flate(), size="1", color_scheme="blue"),
             rx.vstack(
-                rx.text("Industri-Forekomst Fläche", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("127 Polygone · nach Mineraltyp", size="1", color="#6B6560"),
+                rx.text("Industri-Forekomst Fläche", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("127 Polygone · nach Mineraltyp", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -535,8 +535,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_industri_registrering_flate, on_change=lambda _: MapState.toggle_industri_registrering_flate(), size="1", color_scheme="blue"),
             rx.vstack(
-                rx.text("Industri-Registrierung Fläche", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("179 Polygone", size="1", color="#6B6560"),
+                rx.text("Industri-Registrierung Fläche", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("179 Polygone", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -544,8 +544,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_industri_forekomst_punkt, on_change=lambda _: MapState.toggle_industri_forekomst_punkt(), size="1", color_scheme="cyan"),
             rx.vstack(
-                rx.text("Industri-Forekomst Punkt", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("134 Punkte", size="1", color="#6B6560"),
+                rx.text("Industri-Forekomst Punkt", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("134 Punkte", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -553,8 +553,8 @@ def ngu_lagerstaetten_section() -> rx.Component:
         rx.hstack(
             rx.switch(checked=MapState.show_industri_registrering_punkt, on_change=lambda _: MapState.toggle_industri_registrering_punkt(), size="1", color_scheme="cyan"),
             rx.vstack(
-                rx.text("Industri-Registrierung Punkt", size="1", weight="medium", color="#E8E0D0"),
-                rx.text("2.428 Punkte", size="1", color="#6B6560"),
+                rx.text("Industri-Registrierung Punkt", size="1", weight="medium", color="#E0E8F4"),
+                rx.text("2.428 Punkte", size="1", color="#4A6888"),
                 spacing="0", align="start",
             ),
             spacing="2", align="start", padding_y="3px",
@@ -569,37 +569,37 @@ def koordinaten_section() -> rx.Component:
             "🎯 Kartenzentrum",
             size="1",
             weight="bold",
-            color="#B8A898",
+            color="#8AAAC6",
             letter_spacing="0.08em",
             text_transform="uppercase",
             padding_bottom="8px",
         ),
         rx.vstack(
             rx.hstack(
-                rx.text("Lat", size="1", color="#6B6560", width="28px"),
+                rx.text("Lat", size="1", color="#4A6888", width="28px"),
                 rx.input(
                     default_value="62.0",
                     on_blur=MapState.set_lat,
                     size="1",
                     width="80px",
                     style={
-                        "background": "#1A1814",
-                        "border": "1px solid #3A3530",
-                        "color": "#E8E0D0",
+                        "background": "#0F1A30",
+                        "border": "1px solid #284468",
+                        "color": "#E0E8F4",
                         "font_size": "11px",
                         "padding": "2px 6px",
                     },
                 ),
-                rx.text("Lon", size="1", color="#6B6560", width="28px"),
+                rx.text("Lon", size="1", color="#4A6888", width="28px"),
                 rx.input(
                     default_value="10.0",
                     on_blur=MapState.set_lon,
                     size="1",
                     width="80px",
                     style={
-                        "background": "#1A1814",
-                        "border": "1px solid #3A3530",
-                        "color": "#E8E0D0",
+                        "background": "#0F1A30",
+                        "border": "1px solid #284468",
+                        "color": "#E0E8F4",
                         "font_size": "11px",
                         "padding": "2px 6px",
                     },
@@ -608,7 +608,7 @@ def koordinaten_section() -> rx.Component:
                 align="center",
             ),
             rx.hstack(
-                rx.text("Zoom", size="1", color="#6B6560", width="36px"),
+                rx.text("Zoom", size="1", color="#4A6888", width="36px"),
                 rx.slider(
                     default_value=[6],
                     min=4,
@@ -617,7 +617,7 @@ def koordinaten_section() -> rx.Component:
                     width="120px",
                     color_scheme="amber",
                 ),
-                rx.text(MapState.zoom, size="1", color="#B8A898"),
+                rx.text(MapState.zoom, size="1", color="#8AAAC6"),
                 spacing="2",
                 align="center",
             ),
@@ -632,21 +632,21 @@ def sidebar() -> rx.Component:
         # Header
         rx.box(
             rx.text("EMI", size="2", weight="bold", color="#C8A850", letter_spacing="0.15em"),
-            rx.text("ExploreIQ", size="1", color="#6B6560", letter_spacing="0.2em"),
+            rx.text("ExploreIQ", size="1", color="#4A6888", letter_spacing="0.2em"),
             rx.divider(color_scheme="amber", margin_y="12px"),
             padding_bottom="4px",
         ),
         # Layer-Gruppen
         *[gruppe_section(g) for g in GRUPPEN],
-        rx.divider(color="#2A2520", margin_y="8px"),
+        rx.divider(color="#1E3254", margin_y="8px"),
         overlay_section(),
-        rx.divider(color="#2A2520", margin_y="8px"),
+        rx.divider(color="#1E3254", margin_y="8px"),
         ngu_lagerstaetten_section(),
-        rx.divider(color="#2A2520", margin_y="8px"),
+        rx.divider(color="#1E3254", margin_y="8px"),
         koordinaten_section(),
         # Footer
         rx.box(
-            rx.text("© NGU · DMF · Element29", size="1", color="#3A3530"),
+            rx.text("© NGU · DMF · Element29", size="1", color="#284468"),
             padding_top="8px",
         ),
         width="280px",
@@ -654,8 +654,8 @@ def sidebar() -> rx.Component:
         height="100vh",
         overflow_y="auto",
         padding="16px",
-        background="#12100E",
-        border_right="1px solid #2A2520",
+        background="#0B1222",
+        border_right="1px solid #1E3254",
         style={"scrollbar_width": "thin"},
     )
 
@@ -678,8 +678,8 @@ def basemap_tabs() -> rx.Component:
                 on_click=MapState.set_basemap("dark"),
                 style={
                     **tab_style_base,
-                    "background": rx.cond(MapState.basemap == "dark", "#C8A850", "#1E1C18"),
-                    "color": rx.cond(MapState.basemap == "dark", "#12100E", "#6B6560"),
+                    "background": rx.cond(MapState.basemap == "dark", "#C8A850", "#132238"),
+                    "color": rx.cond(MapState.basemap == "dark", "#0B1222", "#4A6888"),
                     "border_radius": "4px 0 0 4px",
                     "font_weight": rx.cond(MapState.basemap == "dark", "700", "400"),
                 },
@@ -689,8 +689,8 @@ def basemap_tabs() -> rx.Component:
                 on_click=MapState.set_basemap("light"),
                 style={
                     **tab_style_base,
-                    "background": rx.cond(MapState.basemap == "light", "#C8A850", "#1E1C18"),
-                    "color": rx.cond(MapState.basemap == "light", "#12100E", "#6B6560"),
+                    "background": rx.cond(MapState.basemap == "light", "#C8A850", "#132238"),
+                    "color": rx.cond(MapState.basemap == "light", "#0B1222", "#4A6888"),
                     "border_radius": "0",
                     "font_weight": rx.cond(MapState.basemap == "light", "700", "400"),
                 },
@@ -700,8 +700,8 @@ def basemap_tabs() -> rx.Component:
                 on_click=MapState.set_basemap("satellite"),
                 style={
                     **tab_style_base,
-                    "background": rx.cond(MapState.basemap == "satellite", "#C8A850", "#1E1C18"),
-                    "color": rx.cond(MapState.basemap == "satellite", "#12100E", "#6B6560"),
+                    "background": rx.cond(MapState.basemap == "satellite", "#C8A850", "#132238"),
+                    "color": rx.cond(MapState.basemap == "satellite", "#0B1222", "#4A6888"),
                     "border_radius": "0 4px 4px 0",
                     "font_weight": rx.cond(MapState.basemap == "satellite", "700", "400"),
                 },
@@ -713,8 +713,8 @@ def basemap_tabs() -> rx.Component:
         left="50%",
         transform="translateX(-50%)",
         z_index="10",
-        background="#12100E",
-        border="1px solid #3A3530",
+        background="#0B1222",
+        border="1px solid #284468",
         border_radius="6px",
         padding="4px",
         box_shadow="0 2px 12px rgba(0,0,0,0.5)",
@@ -733,7 +733,7 @@ def map_area() -> rx.Component:
             id="map-container",
             width="100%",
             height="100vh",
-            background="#1A1814",
+            background="#0F1A30",
         ),
         basemap_tabs(),
         position="relative",
@@ -751,7 +751,7 @@ def login_page() -> rx.Component:
     return rx.center(
         rx.vstack(
             rx.text("EMI ExploreIQ", size="6", weight="bold", color="#C8A850", letter_spacing="0.15em"),
-            rx.text("Restricted Access", size="2", color="#6B6560", letter_spacing="0.1em"),
+            rx.text("Restricted Access", size="2", color="#4A6888", letter_spacing="0.1em"),
             rx.divider(width="200px", color_scheme="amber"),
             rx.input(
                 placeholder="Passwort",
@@ -759,9 +759,9 @@ def login_page() -> rx.Component:
                 on_change=MapState.set_password_input,
                 width="220px",
                 style={
-                    "background": "#1A1814",
-                    "border": "1px solid #3A3530",
-                    "color": "#E8E0D0",
+                    "background": "#0F1A30",
+                    "border": "1px solid #284468",
+                    "color": "#E0E8F4",
                     "text_align": "center",
                 },
             ),
@@ -779,7 +779,7 @@ def login_page() -> rx.Component:
             align="center",
         ),
         height="100vh",
-        background="#12100E",
+        background="#0B1222",
     )
 
 
@@ -794,14 +794,14 @@ def map_page() -> rx.Component:
             # Back-Button oben links
             rx.link(
                 rx.hstack(
-                    rx.text("←", size="1", color="#6B6560"),
-                    rx.text("Dashboard", size="1", color="#6B6560", letter_spacing="0.06em"),
+                    rx.text("←", size="1", color="#4A6888"),
+                    rx.text("Dashboard", size="1", color="#4A6888", letter_spacing="0.06em"),
                     spacing="1",
                     align="center",
                     padding="4px 10px",
                     border_radius="4px",
-                    border="1px solid #2A2520",
-                    background="rgba(18,16,14,0.85)",
+                    border="1px solid #1E3254",
+                    background="rgba(11,18,34,0.88)",
                     style={
                         "_hover": {"border_color": "#C8A850", "color": "#C8A850"},
                         "transition": "all 0.2s",
@@ -825,7 +825,7 @@ def map_page() -> rx.Component:
                 overflow="hidden",
             ),
             position="relative",
-            background="#12100E",
+            background="#0B1222",
             width="100%",
             height="100vh",
             overflow="hidden",
@@ -853,12 +853,12 @@ from mineral_app.faq.prospektivitaet import faq_prospektivitaet_page
 
 app = rx.App(
     style={
-        "font_family": "'IBM Plex Mono', monospace",
-        "background": "#12100E",
-        "color": "#E8E0D0",
+        "font_family": "'IBM Plex Sans', sans-serif",
+        "background": "#0B1222",
+        "color": "#E0E8F4",
     },
     stylesheets=[
-        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap",
+        "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap",
         "https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css",
     ],
     head_components=[
@@ -878,13 +878,13 @@ def _placeholder(title: str, icon: str) -> rx.Component:
         rx.vstack(
             rx.text(icon, style={"font_size": "40px"}),
             rx.text(title, size="4", weight="bold", color="#C8A850"),
-            rx.text("In Planung", size="2", color="#6B6560"),
-            rx.link("← Dashboard", href="/", color="#6B6560", size="1", margin_top="16px"),
+            rx.text("In Planung", size="2", color="#4A6888"),
+            rx.link("← Dashboard", href="/", color="#4A6888", size="1", margin_top="16px"),
             spacing="3",
             align="center",
         ),
         height="100vh",
-        background="#12100E",
+        background="#0B1222",
     )
 
 

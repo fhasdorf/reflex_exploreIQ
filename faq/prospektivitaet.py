@@ -6,15 +6,15 @@ Abgelegt in mineral_app/faq/prospektivitaet.py
 import reflex as rx
 from mineral_app.navbar import navbar
 
-BG_DEEP   = "#12100E"
-BG_CARD   = "#1A1814"
-BORDER    = "#2A2520"
+BG_DEEP   = "#0B1222"
+BG_CARD   = "#0F1A30"
+BORDER    = "#1E3254"
 GOLD      = "#C8A850"
 GOLD_DIM  = "#C8A85018"
-GREEN     = "#5D8A6B"
-MUTED     = "#6B6560"
-TEXT_MAIN = "#E8E0D0"
-TEXT_MID  = "#B8A898"
+GREEN     = "#4D9A7A"
+MUTED     = "#4A6888"
+TEXT_MAIN = "#E0E8F4"
+TEXT_MID  = "#8AAAC6"
 WARN      = "#D85A30"
 
 
@@ -88,7 +88,7 @@ def score_table() -> rx.Component:
         # Header
         rx.hstack(
             header("Treffer-Typ"), header("Bedingung"), header("Score"), header("Beispiel"),
-            width="100%", background="#1E1C18", border_radius="6px 6px 0 0",
+            width="100%", background="#132238", border_radius="6px 6px 0 0",
             border=f"1px solid {BORDER}", border_bottom="none",
         ),
         # Rows
@@ -251,9 +251,9 @@ def faq_prospektivitaet_page() -> rx.Component:
 
             rx.divider(color=BORDER, margin_top="40px", margin_bottom="16px"),
             rx.hstack(
-                rx.text("© EMIAG · NGU · DMF · Element29 AS", size="1", color="#3A3530"),
+                rx.text("© EMIAG · NGU · DMF · Element29 AS", size="1", color="#284468"),
                 rx.spacer(),
-                rx.text("EMI ExploreIQ™ Interne Dokumentation", size="1", color="#3A3530"),
+                rx.text("EMI ExploreIQ™ Interne Dokumentation", size="1", color="#284468"),
                 width="100%",
             ),
 

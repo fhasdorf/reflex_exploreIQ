@@ -112,7 +112,7 @@ BTN_BASE = {
     "font_family": "'IBM Plex Mono', monospace",
     "font_size": "10px",
     "letter_spacing": "0.08em",
-    "border": "1px solid #2A2520",
+    "border": "1px solid #1E3254",
     "cursor": "pointer",
     "padding": "4px 10px",
     "border_radius": "4px",
@@ -126,10 +126,10 @@ def toggle_btn(label: str, active: bool, on_click) -> rx.Component:
         on_click=on_click,
         style={
             **BTN_BASE,
-            "background": rx.cond(active, "#C8A850", "#1A1814"),
-            "color": rx.cond(active, "#12100E", "#6B6560"),
+            "background": rx.cond(active, "#C8A850", "#0F1A30"),
+            "color": rx.cond(active, "#0B1222", "#4A6888"),
             "font_weight": rx.cond(active, "700", "400"),
-            "border_color": rx.cond(active, "#C8A850", "#2A2520"),
+            "border_color": rx.cond(active, "#C8A850", "#1E3254"),
         },
     )
 
@@ -138,7 +138,7 @@ def section_label(text: str) -> rx.Component:
     return rx.text(
         text,
         size="1",
-        color="#3A3530",
+        color="#284468",
         letter_spacing="0.15em",
         text_transform="uppercase",
         margin_bottom="8px",
@@ -160,10 +160,10 @@ def geochem_sidebar() -> rx.Component:
             rx.text(
                 "NGU MINS-Datensätze",
                 size="1",
-                color="#3A3530",
+                color="#284468",
                 margin_bottom="8px",
             ),
-            rx.divider(color="#2A2520"),
+            rx.divider(color="#1E3254"),
 
             # Layer
             section_label("Layer"),
@@ -204,15 +204,15 @@ def geochem_sidebar() -> rx.Component:
                             **BTN_BASE,
                             "background": rx.cond(
                                 GeochemState.medium_filter == m,
-                                "#5D8A6B", "#1A1814"
+                                "#4D9A7A", "#0F1A30"
                             ),
                             "color": rx.cond(
                                 GeochemState.medium_filter == m,
-                                "#12100E", "#6B6560"
+                                "#0B1222", "#4A6888"
                             ),
                             "border_color": rx.cond(
                                 GeochemState.medium_filter == m,
-                                "#5D8A6B", "#2A2520"
+                                "#4D9A7A", "#1E3254"
                             ),
                             "font_size": "9px",
                         },
@@ -230,9 +230,9 @@ def geochem_sidebar() -> rx.Component:
                 value=GeochemState.element_filter,
                 on_change=GeochemState.set_element,
                 style={
-                    "background": "#1A1814",
-                    "border": "1px solid #2A2520",
-                    "color": "#E8E0D0",
+                    "background": "#0F1A30",
+                    "border": "1px solid #1E3254",
+                    "color": "#E0E8F4",
                     "font_family": "'IBM Plex Mono', monospace",
                     "font_size": "11px",
                     "width": "100%",
@@ -269,29 +269,29 @@ def geochem_sidebar() -> rx.Component:
                 rx.hstack(
                     rx.box(width="12px", height="12px", border_radius="50%",
                            background="#E74C3C"),
-                    rx.text("High  > 70", size="1", color="#6B6560"),
+                    rx.text("High  > 70", size="1", color="#4A6888"),
                     spacing="2", align="center",
                 ),
                 rx.hstack(
                     rx.box(width="12px", height="12px", border_radius="50%",
                            background="#C8A850"),
-                    rx.text("Mid   40–70", size="1", color="#6B6560"),
+                    rx.text("Mid   40–70", size="1", color="#4A6888"),
                     spacing="2", align="center",
                 ),
                 rx.hstack(
                     rx.box(width="12px", height="12px", border_radius="50%",
-                           background="#5D8A6B"),
-                    rx.text("Low   < 40", size="1", color="#6B6560"),
+                           background="#4D9A7A"),
+                    rx.text("Low   < 40", size="1", color="#4A6888"),
                     spacing="2", align="center",
                 ),
                 spacing="1",
             ),
 
-            rx.divider(color="#2A2520", margin_top="16px"),
+            rx.divider(color="#1E3254", margin_top="16px"),
 
             # Stats
-            rx.text("2.918 Proben · 23 Elemente", size="1", color="#3A3530"),
-            rx.text("7,6 Mio Geophysikpunkte", size="1", color="#3A3530"),
+            rx.text("2.918 Proben · 23 Elemente", size="1", color="#284468"),
+            rx.text("7,6 Mio Geophysikpunkte", size="1", color="#284468"),
             rx.text("75 High-Anomalien (>70)", size="1", color="#C8A850"),
 
             spacing="2",
@@ -302,8 +302,8 @@ def geochem_sidebar() -> rx.Component:
         min_width="220px",
         height="100vh",
         overflow_y="auto",
-        background="#12100E",
-        border_right="1px solid #2A2520",
+        background="#0B1222",
+        border_right="1px solid #1E3254",
         padding="16px",
     )
 
@@ -321,7 +321,7 @@ def geochem_map_area() -> rx.Component:
             id="geochem-map-container",
             width="100%",
             height="100vh",
-            background="#1A1814",
+            background="#0F1A30",
         ),
         # Popup
         rx.cond(
@@ -339,7 +339,7 @@ def geochem_map_area() -> rx.Component:
                                 **BTN_BASE,
                                 "padding": "2px 6px",
                                 "background": "transparent",
-                                "color": "#6B6560",
+                                "color": "#4A6888",
                                 "border": "none",
                             },
                         ),
@@ -354,7 +354,7 @@ def geochem_map_area() -> rx.Component:
                 bottom="24px",
                 right="24px",
                 width="280px",
-                background="#1A1814",
+                background="#0F1A30",
                 border="1px solid #C8A850",
                 border_radius="8px",
                 padding="16px",
@@ -374,14 +374,14 @@ def geochem_page() -> rx.Component:
         # Back-Button
         rx.link(
             rx.hstack(
-                rx.text("←", size="1", color="#6B6560"),
-                rx.text("Dashboard", size="1", color="#6B6560",
+                rx.text("←", size="1", color="#4A6888"),
+                rx.text("Dashboard", size="1", color="#4A6888",
                         letter_spacing="0.06em"),
                 spacing="1",
                 align="center",
                 padding="4px 10px",
                 border_radius="4px",
-                border="1px solid #2A2520",
+                border="1px solid #1E3254",
                 background="rgba(18,16,14,0.85)",
                 style={
                     "_hover": {"border_color": "#C8A850", "color": "#C8A850"},
@@ -405,7 +405,7 @@ def geochem_page() -> rx.Component:
             overflow="hidden",
         ),
         position="relative",
-        background="#12100E",
+        background="#0B1222",
         width="100%",
         height="100vh",
         overflow="hidden",

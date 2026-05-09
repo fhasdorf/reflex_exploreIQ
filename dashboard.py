@@ -15,23 +15,23 @@ class DashState(rx.State):
     pass
 
 
-def kpi_card(label: str, value: str, sub: str, sub_color: str = "#6B6560") -> rx.Component:
+def kpi_card(label: str, value: str, sub: str, sub_color: str = "#4A6888") -> rx.Component:
     return rx.box(
         rx.vstack(
             rx.text(
                 label,
                 size="1",
-                color="#6B6560",
+                color="#4A6888",
                 letter_spacing="0.1em",
                 text_transform="uppercase",
             ),
-            rx.text(value, size="6", weight="bold", color="#E8E0D0"),
+            rx.text(value, size="6", weight="bold", color="#E0E8F4"),
             rx.text(sub, size="1", color=sub_color),
             spacing="1",
             align="start",
         ),
-        background="#1A1814",
-        border="1px solid #2A2520",
+        background="#0F1A30",
+        border="1px solid #1E3254",
         border_radius="8px",
         padding="16px 20px",
         flex="1",
@@ -54,15 +54,15 @@ def app_card(
                     width="40px",
                     height="40px",
                     border_radius="8px",
-                    background="#1A1814",
+                    background="#0F1A30",
                     display="flex",
                     align_items="center",
                     justify_content="center",
-                    border="1px solid #2A2520",
+                    border="1px solid #1E3254",
                 ),
                 rx.vstack(
-                    rx.text(title, size="2", weight="bold", color="#E8E0D0"),
-                    rx.text(desc, size="1", color="#6B6560"),
+                    rx.text(title, size="2", weight="bold", color="#E0E8F4"),
+                    rx.text(desc, size="1", color="#4A6888"),
                     spacing="0",
                     align="start",
                 ),
@@ -86,13 +86,13 @@ def app_card(
             rx.box(
                 height="3px",
                 border_radius="2px",
-                background="#2A2520",
+                background="#1E3254",
                 width="100%",
                 overflow="hidden",
                 margin_top="4px",
             ),
-            background="#1E1C18",
-            border="1px solid #2A2520",
+            background="#132238",
+            border="1px solid #1E3254",
             border_radius="10px",
             padding="16px 20px",
             width="100%",
@@ -100,7 +100,7 @@ def app_card(
                 "transition": "all 0.2s",
                 "_hover": {
                     "border_color": "#C8A850",
-                    "background": "#221F1A",
+                    "background": "#172A48",
                 },
             },
         ),
@@ -116,11 +116,11 @@ def dashboard_page() -> rx.Component:
         rx.box(
             # KPI-Reihe
             rx.hstack(
-                kpi_card("Claims total", "234", "↑ 12 diesen Monat", "#5D8A6B"),
+                kpi_card("Claims total", "234", "↑ 12 diesen Monat", "#4D9A7A"),
                 kpi_card("Gesamtfläche", "2.4 Gkm²", "Ø 10 km² / Claim"),
                 kpi_card("Bergrettigheter", "1.847", "DMF · täglich aktuell"),
                 kpi_card("EU Critical", "6", "Mineraltypen priorisiert", "#C8A850"),
-                kpi_card("Flurstücke", "~180k", "Matrikkel · Geonorge", "#6B6560"),
+                kpi_card("Flurstücke", "~180k", "Matrikkel · Geonorge", "#4A6888"),
                 spacing="4",
                 width="100%",
                 margin_bottom="32px",
@@ -130,7 +130,7 @@ def dashboard_page() -> rx.Component:
             rx.text(
                 "Analysetools",
                 size="1",
-                color="#3A3530",
+                color="#284468",
                 letter_spacing="0.15em",
                 text_transform="uppercase",
                 margin_bottom="12px",
@@ -144,7 +144,7 @@ def dashboard_page() -> rx.Component:
                     "NGU WMS · Element29 · Satellit · Dark",
                     "/map",
                     "AKTIV",
-                    "#5D8A6B",
+                    "#4D9A7A",
                 ),
                 app_card(
                     "⬡",
@@ -152,7 +152,7 @@ def dashboard_page() -> rx.Component:
                     "Keyword · Proxy-Mineralien · Score-Gewichtung",
                     "/search",
                     "AKTIV",
-                    "#5D8A6B",
+                    "#4D9A7A",
                 ),
                 # ── NEU ──────────────────────────────────────────────────────
                 app_card(
@@ -206,25 +206,25 @@ def dashboard_page() -> rx.Component:
                 rx.text(
                     "EMI ExploreIQ · EMIAG · Reflex · AWS S3",
                     size="1",
-                    color="#4A4540",
+                    color="#284468",
                 ),
                 rx.spacer(),
                 rx.text(
                     "© NGU · DMF · Element29 AS",
                     size="1",
-                    color="#4A4540",
+                    color="#284468",
                 ),
                 width="100%",
                 margin_top="40px",
                 padding_top="16px",
-                border_top="1px solid #1E1C18",
+                border_top="1px solid #132238",
             ),
 
             max_width="1100px",
             margin="0 auto",
             padding="32px 24px",
         ),
-        background="#12100E",
+        background="#0B1222",
         min_height="100vh",
-        color="#E8E0D0",
+        color="#E0E8F4",
     )
