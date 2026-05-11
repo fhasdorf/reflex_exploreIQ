@@ -4,8 +4,8 @@ Mineral auswählen · Proxy-Gewichte einstellen · Scoring starten · Karte öff
 """
 
 import reflex as rx
-from mineral_app.navbar import navbar
-from mineral_app.search_state import SearchState, MINERALS
+from mineral_app.components.navbar import navbar
+from mineral_app.states.search_state import SearchState, MINERALS
 
 
 # ---------------------------------------------------------------------------

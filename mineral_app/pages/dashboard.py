@@ -8,7 +8,7 @@ dashboard.py — Startseite / Übersicht
 """
 
 import reflex as rx
-from mineral_app.navbar import navbar
+from mineral_app.components.navbar import navbar
 
 
 class DashState(rx.State):

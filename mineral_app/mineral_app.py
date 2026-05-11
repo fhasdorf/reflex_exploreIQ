@@ -11,7 +11,7 @@ Ersetzt die Streamlit map3.py
 import reflex as rx
 import json
 import os
-from mineral_app.geochem_map import geochem_page, GeochemState
+from mineral_app.pages.geochem_map import geochem_page, GeochemState
 
 # ---------------------------------------------------------------------------
 # WMS Layer Konfiguration
@@ -128,8 +128,8 @@ WMS_LAYERS = {
 GRUPPEN = ["Berggrunn", "Metalle", "Industrimineral", "Geophysik"]
 
 # Pfade zu Geodaten (relativ zum Projektroot)
-E29_PATH = "../geodaten/element29_claims.geojson"
-BERGR_PATH = "../geodaten/bergrettigheter.csv"
+E29_PATH = "geodaten/element29_claims.geojson"
+BERGR_PATH = "geodaten/bergrettigheter.csv"
 
 
 # ---------------------------------------------------------------------------
@@ -845,10 +845,10 @@ def index() -> rx.Component:
 # ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
-from mineral_app.navbar import navbar
-from mineral_app.dashboard import dashboard_page
-from mineral_app.search import search_page
-from mineral_app.search_state import SearchState
+from mineral_app.components.navbar import navbar
+from mineral_app.pages.dashboard import dashboard_page
+from mineral_app.pages.search import search_page
+from mineral_app.states.search_state import SearchState
 from mineral_app.faq.prospektivitaet import faq_prospektivitaet_page
 
 app = rx.App(

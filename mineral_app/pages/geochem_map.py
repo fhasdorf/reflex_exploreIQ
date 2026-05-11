@@ -14,10 +14,10 @@ import os
 # Daten laden
 # ---------------------------------------------------------------------------
 
-GEOCHEM_PATH  = "../geodaten/anomalien_geochemie.geojson"
-EM_PATH       = "../geodaten/anomalien_em.geojson"
-MAG_PATH      = "../geodaten/anomalien_mag.geojson"
-RAD_PATH      = "../geodaten/anomalien_rad.geojson"
+GEOCHEM_PATH  = "geodaten/anomalien_geochemie.geojson"
+EM_PATH       = "geodaten/anomalien_em.geojson"
+MAG_PATH      = "geodaten/anomalien_mag.geojson"
+RAD_PATH      = "geodaten/anomalien_rad.geojson"
 
 
 def _load_geojson(path: str) -> str:
@@ -48,7 +48,7 @@ class GeochemState(rx.State):
 
     # Filter
     medium_filter: str  = "Alle"       # Alle | Mineralboden | Humus | Till
-    score_min: int      = 0            # Anomalie-Score Minimum
+    score_min: list[float] = [0]       # Anomalie-Score Minimum
     element_filter: str = "Au"         # Anzuzeigendes Element für Farbgebung
 
     # Popup
@@ -64,7 +64,7 @@ class GeochemState(rx.State):
             "show_mag":        self.show_mag,
             "show_rad":        self.show_rad,
             "medium_filter":   self.medium_filter,
-            "score_min":       self.score_min,
+            "score_min":       self.score_min[0],
             "element_filter":  self.element_filter,
             "geochem_data":    json.loads(_GEOCHEM_JSON),
             "em_data":         json.loads(_EM_JSON),
@@ -87,7 +87,7 @@ class GeochemState(rx.State):
     def set_medium(self, val: str):
         self.medium_filter = val
 
-    def set_score_min(self, val: int):
+    def set_score_min(self, val: list):
         self.score_min = val
 
     def set_element(self, val: str):
@@ -252,7 +252,7 @@ def geochem_sidebar() -> rx.Component:
                     width="100%",
                 ),
                 rx.text(
-                    GeochemState.score_min,
+                    GeochemState.score_min[0],
                     size="1",
                     color="#C8A850",
                     min_width="28px",

@@ -4,7 +4,7 @@ Abgelegt in mineral_app/faq/prospektivitaet.py
 """
 
 import reflex as rx
-from mineral_app.navbar import navbar
+from mineral_app.components.navbar import navbar
 
 BG_DEEP   = "#0B1222"
 BG_CARD   = "#0F1A30"
